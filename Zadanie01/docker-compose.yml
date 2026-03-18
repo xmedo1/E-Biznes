@@ -1,0 +1,21 @@
+services:
+  zadanie01_30:
+    build: ./3.0
+    container_name: zadanie01_30
+    tty: true
+    stdin_open: true
+  zadanie01_35:
+    build: ./3.5
+    container_name: zadanie01_35
+    tty: true
+    stdin_open: true
+  zadanie01_40:
+    build: ./4.0
+    container_name: zadanie01_40
+    tty: true
+    stdin_open: true
+  zadanie01_45:
+    build: ./4.5
+    container_name: zadanie01_45
+    tty: true
+    stdin_open: true
