@@ -1,17 +1,19 @@
+### 3.5
+### Read
 GET http://localhost:8080/products/
 
-###
+### Create
 
 POST http://localhost:8080/products/
 Content-Type: application/json
 
 {
-    "id": 3,
+    "id": 5,
     "name": "Arbuz",
     "price": 15.0
 }
 
-###
+### Update
 
 PUT http://localhost:8080/products/1
 Content-Type: application/json
@@ -22,6 +24,55 @@ Content-Type: application/json
     "price": 3.5
 }
 
-###
+### Delete
 
 DELETE http://localhost:8080/products/3
+
+
+### 4.0
+### Kategorie
+
+GET http://localhost:8080/categories
+
+### Dodaj kategorie
+
+POST http://localhost:8080/categories/
+Content-Type: application/json
+
+{
+  "id": 3,
+  "name": "Pieczywo"
+}
+
+### Aktualizuj kategorie
+
+PUT http://localhost:8080/categories/3
+
+{
+  "id": 3,
+  "name": "Nabial"
+}
+
+
+### Usun kategorie
+DELETE http://localhost:8080/categories/3
+
+### Koszyk
+GET http://localhost:8080/cart
+
+### 
+POST http://localhost:8080/cart/
+Content-Type: application/json
+
+{
+    "id": 1,
+    "name": "Banan",
+    "price": 1.5
+}
+
+### Wyczysc koszyk
+
+DELETE http://localhost:8080/cart/
+
+### Usun dany element z koszyka
+DELETE http://localhost:8080/cart/3

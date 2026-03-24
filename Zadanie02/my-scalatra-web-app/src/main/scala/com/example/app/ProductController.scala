@@ -17,7 +17,9 @@ class ProductController extends ScalatraServlet with JacksonJsonSupport {
   
   val products = ListBuffer(
     Product(1,"Banan", 1.5),
-    Product(2,"Jablko", 1.2)
+    Product(2,"Jablko", 1.2),
+    Product(3, "Marchewka", 0.9),
+    Product(4, "Ziemniak", 0.5),
   )
 
   get("/") {
