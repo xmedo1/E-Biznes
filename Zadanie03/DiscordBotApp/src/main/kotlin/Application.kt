@@ -18,7 +18,10 @@ import dev.kord.gateway.PrivilegedIntent
 
 @Serializable
 data class DiscordMessage(val content: String)
-
+val categoriesData = mapOf(
+    "Warzywa" to listOf("Ziemniak", "Marchewka", "Salata"),
+    "Owoce" to listOf("Banan", "Jablko", "Pomarancza"),
+)
 fun main(args: Array<String>): Unit = EngineMain.main(args)
 
 fun Application.module() {
@@ -48,10 +51,19 @@ fun Application.module() {
     launch {
         val kord = Kord(token)
         kord.on<MessageCreateEvent> {
-            println("Wiadomosc od: ${message.author?.username} Tresc: ${message.content}")
-            if (message.content.lowercase() == "test") {
-                message.channel.createMessage("dziala!!!")
+            val content = message.content
+            println("Wiadomosc od: ${message.author?.username} | Tresc: $content")
+            when {
+                content.lowercase() == "test" -> {
+                    message.channel.createMessage("dziala!!!")
+                }
+
+                content.lowercase() == "kategorie" -> {
+                    val categories = categoriesData.keys.joinTo(StringBuilder(), separator = ", ", prefix = "[", postfix = "]")
+                    message.channel.createMessage("Kategorie: ${categories}")
+                }
             }
+
         }
         kord.login {
             @OptIn(PrivilegedIntent::class)
