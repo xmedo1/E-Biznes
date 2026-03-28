@@ -19,8 +19,8 @@ import dev.kord.gateway.PrivilegedIntent
 @Serializable
 data class DiscordMessage(val content: String)
 val categoriesData = mapOf(
-    "Warzywa" to listOf("Ziemniak", "Marchewka", "Salata"),
-    "Owoce" to listOf("Banan", "Jablko", "Pomarancza"),
+    "warzywa" to listOf("Ziemniak", "Marchewka", "Salata"),
+    "owoce" to listOf("Banan", "Jablko", "Pomarancza"),
 )
 fun main(args: Array<String>): Unit = EngineMain.main(args)
 
@@ -61,6 +61,11 @@ fun Application.module() {
                 content.lowercase() == "kategorie" -> {
                     val categories = categoriesData.keys.joinTo(StringBuilder(), separator = ", ", prefix = "[", postfix = "]")
                     message.channel.createMessage("Kategorie: ${categories}")
+                }
+
+                categoriesData.containsKey(content.lowercase()) -> {
+                    val products = categoriesData[content.lowercase()]?.joinTo(StringBuilder(), separator = ", ", prefix = "[", postfix = "]")
+                    message.channel.createMessage("Produkty w kategorii ${content.lowercase()}: $products")
                 }
             }
 
