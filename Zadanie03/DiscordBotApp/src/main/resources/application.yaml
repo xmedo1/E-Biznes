@@ -6,3 +6,4 @@ ktor:
     port: 8080
 discord:
   webhook_url: ${DISCORD_WEBHOOK}
+  token: ${DISCORD_TOKEN}

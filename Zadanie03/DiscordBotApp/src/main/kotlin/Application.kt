@@ -10,6 +10,11 @@ import io.ktor.server.netty.*
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
+import dev.kord.core.Kord
+import dev.kord.core.event.message.MessageCreateEvent
+import dev.kord.core.on
+import dev.kord.gateway.Intent
+import dev.kord.gateway.PrivilegedIntent
 
 @Serializable
 data class DiscordMessage(val content: String)
@@ -20,6 +25,7 @@ fun Application.module() {
     configureSerialization()
     configureRouting()
     val webhookUrl = environment.config.property("discord.webhook_url").getString()
+    val token = environment.config.property("discord.token").getString()
 
     val client = HttpClient(CIO) {
         install(io.ktor.client.plugins.contentnegotiation.ContentNegotiation) {
@@ -36,6 +42,20 @@ fun Application.module() {
             println("Wyslano wiadomosc")
         } catch (e: Exception) {
             println("Blad podczas wysylania: ${e.message}")
+        }
+    }
+
+    launch {
+        val kord = Kord(token)
+        kord.on<MessageCreateEvent> {
+            println("Wiadomosc od: ${message.author?.username} Tresc: ${message.content}")
+            if (message.content.lowercase() == "test") {
+                message.channel.createMessage("dziala!!!")
+            }
+        }
+        kord.login {
+            @OptIn(PrivilegedIntent::class)
+            intents += Intent.MessageContent
         }
     }
 }
