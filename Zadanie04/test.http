@@ -5,9 +5,9 @@ POST http://localhost:8080/products
 Content-Type: application/json
 
 {
-    "id": 2,
+    "id": 1,
     "name": "Jablko",
-    "price": 1.2
+    "price": 1.5
 }
 
 ###

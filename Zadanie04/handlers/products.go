@@ -2,27 +2,26 @@ package handlers
 
 import (
 	"net/http"
-	"strconv"
+	"gorm.io/gorm"
 	"go-echo-api/models"
 	"github.com/labstack/echo/v4"
 )
 
-var products = []models.Product{
-	{ID: 1, Name: "Banan", Price: 1.5},
-}
+var Db *gorm.DB
 
 func GetAllProducts(c echo.Context) error {
+	var products []models.Product
+	Db.Find(&products)
 	return c.JSON(http.StatusOK, products)
 }
 
 func GetProduct(c echo.Context) error {
-	id, _ := strconv.Atoi(c.Param("id"))
-	for _, p := range products {
-		if p.ID == id {
-			return c.JSON(http.StatusOK, p)
-		}
+	id := c.Param("id")
+	var p models.Product
+	if err := Db.First(&p, id).Error; err != nil {
+		return c.JSON(http.StatusNotFound, "Produkt nie istnieje")
 	}
-	return c.JSON(http.StatusNotFound, "Produkt nie istnieje")
+	return c.JSON(http.StatusOK, p)
 }
 
 func CreateProduct(c echo.Context) error {
@@ -30,36 +29,27 @@ func CreateProduct(c echo.Context) error {
 	if err := c.Bind(p); err != nil {
 		return err
 	}
-	p.ID = len(products) + 1
-	products = append(products, *p)
+	Db.Create(&p)
 	return c.JSON(http.StatusCreated, p)
 }
 
 func UpdateProduct(c echo.Context) error {
-	id, _ := strconv.Atoi(c.Param("id"))
-	
-	for i, p := range products {
-		if p.ID == id {
-			updatedProduct := new(models.Product)
-			if err := c.Bind(updatedProduct); err != nil {
-				return err
-			}
-			updatedProduct.ID = id
-			products[i] = *updatedProduct
-			return c.JSON(http.StatusOK, updatedProduct)
-		}
+	id := c.Param("id")
+	var p models.Product
+
+	if err := Db.First(&p, id).Error; err != nil {
+		return c.JSON(http.StatusNotFound, "Produkt nie istnieje")
 	}
-	return c.JSON(http.StatusNotFound, "Produkt nie istnieje")
+
+	if err := c.Bind(&p); err != nil {
+		return err
+	}
+	Db.Save(&p)
+	return c.JSON(http.StatusOK, p)
 }
 
 func DeleteProduct(c echo.Context) error {
-	id, _ := strconv.Atoi(c.Param("id"))
-	
-	for i, p := range products {
-		if p.ID == id {
-			products = append(products[:i], products[i+1:]...)
-			return c.NoContent(http.StatusNoContent)
-		}
-	}
-	return c.JSON(http.StatusNotFound, "Produkt nie istnieje")
+	id := c.Param("id")
+	Db.Delete(&models.Product{}, id)
+	return c.NoContent(http.StatusNoContent)
 }
