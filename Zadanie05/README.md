@@ -8,7 +8,7 @@ z aplikacji serwerowej. Aplikacja serwera w jednym z trzech języków:
 Kotlin, Scala, Go. Dane pomiędzy wszystkimi komponentami powinny być
 przesyłane za pomocą React hooks.
 
-:white_check_mark: 3.0 W ramach projektu należy stworzyć dwa komponenty: Produkty oraz Płatności; Płatności powinny wysyłać do aplikacji serwerowej dane, a w Produktach powinniśmy pobierać dane o produktach z aplikacji serwerowej; \
+:white_check_mark: 3.0 W ramach projektu należy stworzyć dwa komponenty: Produkty oraz Płatności; Płatności powinny wysyłać do aplikacji serwerowej dane, a w Produktach powinniśmy pobierać dane o produktach z aplikacji serwerowej; [[commit](https://github.com/xmedo1/E-Biznes/commit/1381ecf904828c04953f701ae1bbe96f0f06defb)]\
 :x: 3.5 Należy dodać Koszyk wraz z widokiem; należy wykorzystać routing \
 :x: 4.0 Dane pomiędzy wszystkimi komponentami powinny być przesyłane za pomocą React hooks \
 :x: 4.5 Należy dodać skrypt uruchamiający aplikację serwerową oraz kliencką na dockerze via docker-compose \
