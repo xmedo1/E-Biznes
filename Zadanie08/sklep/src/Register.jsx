@@ -1,43 +1,46 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 
-const Login = () => {
+const Register = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [errorMsg, setErrorMsg] = useState("");
+  const [msg, setMsg] = useState("");
+  const [isError, setIsError] = useState(false);
   
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleRegister = (e) => {
     e.preventDefault();
-    setErrorMsg("");
+    setMsg(""); 
+    setIsError(false);
 
     const credentials = { username, password };
 
-    fetch('http://localhost:8080/login', {
+    fetch('http://localhost:8080/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(credentials)
     })
     .then(async (res) => {
       if (res.ok) {
-        const data = await res.json();
-        localStorage.setItem('token', data.token); 
-        navigate('/sklep');
+        setIsError(false);
+        setMsg("Zarejestrowano pomyślnie");
       } else {
         const errorMessage = await res.text();
-        setErrorMsg(errorMessage); 
+        setIsError(true);
+        setMsg(errorMessage); 
       }
     })
     .catch(err => {
-      setErrorMsg("Blad polaczenia z serwerem.");
+      setIsError(true);
+      setMsg("Błąd połączenia z serwerem.");
     });
   };
 
   return (
     <div style={{ maxWidth: '300px', margin: '50px auto', border: '1px solid #ccc', padding: '20px' }}>
-      <h2>Login</h2>
-      <form onSubmit={handleLogin}>
+      <h2>Rejestracja</h2>
+      <form onSubmit={handleRegister}>
         <div style={{ marginBottom: '10px' }}>
           <label>Login: </label>
           <input 
@@ -45,7 +48,6 @@ const Login = () => {
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
-            placeholder="admin"
             style={{ width: '100%' }}
           />
         </div>
@@ -56,19 +58,19 @@ const Login = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            placeholder="password"
             style={{ width: '100%' }}
           />
         </div>
-        <button type="submit" style={{ width: '100%', padding: '5px', marginTop: '15px' }}>Zaloguj</button>
+        <button type="submit" style={{ width: '100%', padding: '5px', marginTop: '15px' }}>Zarejestruj</button>
       </form>
-      {errorMsg && <p style={{ color: 'red', marginTop: '10px', fontWeight: 'bold' }}>{errorMsg}</p>}
+      
+      {msg && <p style={{ color: isError ? 'red' : 'green', marginTop: '10px', fontWeight: 'bold' }}>{msg}</p>}
 
       <div style={{ marginTop: '15px', fontSize: '14px' }}>
-        <Link to="/register">Zarejestruj się</Link>
+        <Link to="/login">Zaloguj się</Link>
       </div>
     </div>
   );
 };
 
-export default Login;
+export default Register;

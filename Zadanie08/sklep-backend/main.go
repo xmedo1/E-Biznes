@@ -4,7 +4,33 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"database/sql"
+	"log"
+
+	_ "github.com/mattn/go-sqlite3"
 )
+
+var db *sql.DB
+
+func initDB() {
+	var err error
+	db, err = sql.Open("sqlite3", "./users.db")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	createTableSQL := `CREATE TABLE IF NOT EXISTS users (
+		"id" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
+		"username" TEXT UNIQUE NOT NULL,
+		"password" TEXT NOT NULL
+	);`
+
+	_, err = db.Exec(createTableSQL)
+	if err != nil {
+		log.Fatal(err)
+	}
+	_, _ = db.Exec(`INSERT OR IGNORE INTO users (username, password) VALUES ('admin', 'password')`)
+}
 
 type Product struct {
 	ID int `json:"id"`
@@ -22,6 +48,9 @@ var testUser = map[string]string{
 }
 
 func main() {
+	initDB()
+	defer db.Close()
+
 	http.HandleFunc("/products", func(w http.ResponseWriter, r *http.Request) {
 		enableCors(&w)
 		products := []Product{
@@ -60,9 +89,14 @@ func main() {
 			return
 		}
 
-		expectedPassword, ok := testUser[creds.Username]
-		if !ok || expectedPassword != creds.Password {
+		var dbPassword string
+		err := db.QueryRow("SELECT password FROM users WHERE username = ?", creds.Username).Scan(&dbPassword)
+		
+		if err == sql.ErrNoRows || dbPassword != creds.Password {
 			http.Error(w, "Zle dane logowania", http.StatusUnauthorized)
+			return
+		} else if err != nil {
+			http.Error(w, "Blad serwera", http.StatusInternalServerError)
 			return
 		}
 
@@ -71,6 +105,37 @@ func main() {
 		}
 
 		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(response)
+	})
+
+
+	http.HandleFunc("/register", func(w http.ResponseWriter, r *http.Request) {
+		enableCors(&w)
+
+		if r.Method == "OPTIONS" {
+			w.WriteHeader(http.StatusOK)
+			return
+		}
+
+		var creds Credentials
+		if err := json.NewDecoder(r.Body).Decode(&creds); err != nil {
+			http.Error(w, "Niepoprawny format danych", http.StatusBadRequest)
+			return
+		}
+
+		_, err := db.Exec("INSERT INTO users (username, password) VALUES (?, ?)", creds.Username, creds.Password)
+		
+		if err != nil {
+			http.Error(w, "Login zajety", http.StatusConflict)
+			return
+		}
+
+		response := map[string]string{
+			"message": "Zarejestrowano pomyslnie",
+		}
+		
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusCreated)
 		json.NewEncoder(w).Encode(response)
 	})
 
