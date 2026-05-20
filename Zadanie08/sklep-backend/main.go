@@ -12,6 +12,15 @@ type Product struct {
 	Price float64 `json:"price"`
 }
 
+type Credentials struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
+}
+
+var testUser = map[string]string{
+	"admin": "password",
+}
+
 func main() {
 	http.HandleFunc("/products", func(w http.ResponseWriter, r *http.Request) {
 		enableCors(&w)
@@ -32,9 +41,37 @@ func main() {
                     http.Error(w, "Bad request", http.StatusBadRequest)
                     return
                 }
-			fmt.Printf("Otrzymano platnosc.)")
+			fmt.Printf("Otrzymano platnosc.")
 			w.WriteHeader(http.StatusCreated)
 		}
+	})
+
+	http.HandleFunc("/login", func(w http.ResponseWriter, r *http.Request) {
+		enableCors(&w)
+
+		if r.Method == "OPTIONS" {
+			w.WriteHeader(http.StatusOK)
+			return
+		}
+
+		var creds Credentials
+		if err := json.NewDecoder(r.Body).Decode(&creds); err != nil {
+			http.Error(w, "Niepoprawny format danych", http.StatusBadRequest)
+			return
+		}
+
+		expectedPassword, ok := testUser[creds.Username]
+		if !ok || expectedPassword != creds.Password {
+			http.Error(w, "Zle dane logowania", http.StatusUnauthorized)
+			return
+		}
+
+		response := map[string]string{
+			"message": "Zalogowano pomyslnie",
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(response)
 	})
 
 	fmt.Println("URL backendu: http://localhost:8080")
