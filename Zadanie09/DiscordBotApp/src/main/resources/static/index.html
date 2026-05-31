@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>AI chat</title>
+    <style>
+        body { font-family: Arial; padding: 20px; background-color: #f4f4f9; }
+        #chatbox { width: 100%; max-width: 500px; height: 300px; border: 1px solid #ccc; background: white; overflow-y: scroll; padding: 10px; margin-bottom: 10px; }
+        .msg { margin: 5px 0; padding: 8px; border-radius: 5px; }
+        .user { background-color: #d1e7dd; text-align: right; }
+        .ai { background-color: #e2e3e5; text-align: left; }
+        input { width: 75%; padding: 10px; }
+        button { width: 20%; padding: 10px; background: #0d6efd; color: white; border: none; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h2>Czatuj z AI</h2>
+    <div id="chatbox"></div>
+    <div>
+        <input type="text" id="userInput" placeholder="O co chcesz zapytać?">
+        <button onclick="sendMessage()">Wyślij</button>
+    </div>
+
+    <script>
+        async function sendMessage() {
+            const input = document.getElementById('userInput');
+            const chatbox = document.getElementById('chatbox');
+            const text = input.value;
+            if (!text) return;
+
+            chatbox.innerHTML += `<div class="msg user">Ty: ${text}</div>`;
+            input.value = '';
+
+            try {
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ text: text })
+                });
+                
+                const data = await response.json();
+                chatbox.innerHTML += `<div class="msg ai">AI: ${data.reply}</div>`;
+            } catch (error) {
+                chatbox.innerHTML += `<div class="msg ai">Błąd połączenia.</div>`;
+            }
+            chatbox.scrollTop = chatbox.scrollHeight;
+        }
+
+        document.getElementById('userInput').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+    </script>
+</body>
+</html>
