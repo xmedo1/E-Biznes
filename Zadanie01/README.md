@@ -1,4 +1,5 @@
 **Zadanie 1** Docker
+
 :white_check_mark: 3.0 obraz ubuntu z Pythonem w wersji 3.10 [[commit](https://github.com/xmedo1/E-Biznes/commit/cd841fe1a736a852c614444a61702a0f4ea28459)] [[DH](https://hub.docker.com/repository/docker/xmedo/ebiznes/tags/01-30/sha256-922fa0d58d48c62e6f818e13097dcc75791b1c4a9523e87e611162a72a5cbe55)] \
 :white_check_mark: 3.5 obraz ubuntu:24.02 z Javą w wersji 8 oraz Kotlinem [[commit](https://github.com/xmedo1/E-Biznes/commit/613dbde40a618b2afd9dfc8d74764f81f541cc3e)] [[DH](https://hub.docker.com/repository/docker/xmedo/ebiznes/tags/01-35/sha256-43a0a676abda541247d525b11d9fa008177db42181ecd55a53aa9b6be7ffc6b4)] \
 :white_check_mark: 4.0 do powyższego należy dodać najnowszego Gradle’a oraz paczkę JDBC SQLite w ramach projektu na Gradle (build.gradle) [[commit](https://github.com/xmedo1/E-Biznes/commit/859e51d958456169f71568bb05308737787b1776)] [[DH](https://hub.docker.com/repository/docker/xmedo/ebiznes/tags/01-40/sha256-6f14b0bc360bc4e7bbb505586ed2bb660d2ff7175877d52bc3455cc40327ab7b)] \
