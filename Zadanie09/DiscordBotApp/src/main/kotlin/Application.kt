@@ -23,15 +23,23 @@ import io.ktor.client.call.*
 
 @Serializable
 data class DiscordMessage(val content: String)
+
 val categoriesData = mapOf(
     "warzywa" to listOf("Ziemniak", "Marchewka", "Salata"),
     "owoce" to listOf("Banan", "Jablko", "Pomarancza"),
 )
 
-@Serializable data class FrontendRequest(val text: String)
-@Serializable data class FrontendResponse(val reply: String)
-@Serializable data class PythonRequest(val text: String)
-@Serializable data class PythonResponse(val response: String)
+@Serializable
+data class FrontendRequest(val text: String)
+
+@Serializable
+data class FrontendResponse(val reply: String)
+
+@Serializable
+data class PythonRequest(val text: String)
+
+@Serializable
+data class PythonResponse(val response: String)
 
 fun main(args: Array<String>): Unit = EngineMain.main(args)
 
@@ -67,9 +75,14 @@ fun Application.module() {
 
     launch {
         try {
+            val pyResponse = client.post("http://localhost:5000/askai") {
+                contentType(ContentType.Application.Json)
+                setBody(PythonRequest(text = "[start]"))
+            }.body<PythonResponse>()
+
             client.post(webhookUrl) {
                 contentType(ContentType.Application.Json)
-                setBody(DiscordMessage("Wiadomosc testowa"))
+                setBody(DiscordMessage("${pyResponse.response} (Zacznij wiadomość od `!ai`, żeby ze mną porozmawiać! :)"))
             }
             println("Wyslano wiadomosc")
         } catch (e: Exception) {
@@ -91,12 +104,18 @@ fun Application.module() {
                 }
 
                 content.lowercase() == "kategorie" -> {
-                    val categories = categoriesData.keys.joinTo(StringBuilder(), separator = ", ", prefix = "[", postfix = "]")
+                    val categories =
+                        categoriesData.keys.joinTo(StringBuilder(), separator = ", ", prefix = "[", postfix = "]")
                     message.channel.createMessage("Kategorie: ${categories}")
                 }
 
                 categoriesData.containsKey(content.lowercase()) -> {
-                    val products = categoriesData[content.lowercase()]?.joinTo(StringBuilder(), separator = ", ", prefix = "[", postfix = "]")
+                    val products = categoriesData[content.lowercase()]?.joinTo(
+                        StringBuilder(),
+                        separator = ", ",
+                        prefix = "[",
+                        postfix = "]"
+                    )
                     message.channel.createMessage("Produkty w kategorii ${content.lowercase()}: $products")
                 }
 
@@ -122,8 +141,8 @@ fun Application.module() {
                         message.channel.createMessage("🤖 AI: coś chyba nie działa ajajaj")
                     }
                 }
-                }
             }
+        }
 
         kord.login {
             @OptIn(PrivilegedIntent::class)
