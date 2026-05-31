@@ -30,6 +30,13 @@ CLOSINGS = [
 
 CLOSING_WORDS = ["do widzenia", "papa", "żegnaj", "dobranoc", "kończymy", "żegnaj"]
 
+GUIDELINES = """
+Jesteś wirtualnym doradcą w profesjonalnym sklepie komputerowym. 
+Twoim zadaniem jest pomaganie klientom TYLKO w sprawach związanych z naszym sklepem, sprzętem komputerowym, podzespołami (karty graficzne, procesory, RAM), laptopami, peryferiami oraz oprogramowaniem.
+Jeśli użytkownik zapyta Cię o cokolwiek niezwiązanego z IT, technologią lub ofertą sklepu (np. o politykę, historię, modę, przepisy kulinarne), 
+MUSISZ odmówić odpowiedzi. Powiedz wtedy uprzejmie: "Przepraszam, ale jestem doradcą w sklepie komputerowym i mogę rozmawiać wyłącznie o sprzęcie IT i technologiach."
+Bądź uprzejmy, profesjonalny i merytoryczny.
+"""
 
 @app.post("/askai")
 def get_ai_response(user_input: UserInput):
@@ -46,6 +53,7 @@ def get_ai_response(user_input: UserInput):
     query = {
         "model": "llama3",
         "prompt": user_input.text,
+        "system": GUIDELINES,
         "stream": False
     }
 
