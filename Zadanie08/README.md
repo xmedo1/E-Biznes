@@ -18,3 +18,5 @@ Prawidłowa komunikacja: react-sewer-dostawca-serwer(via return uri)-react.
 Klucz należy uzyskać na:
 - https://console.cloud.google.com/apis/dashboard,
 - https://developers.facebook.com/
+
+[Link](https://www.youtube.com/watch?v=ZiUKDB4M_rY) do filmu.

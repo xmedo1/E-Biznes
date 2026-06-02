@@ -13,3 +13,5 @@ przesyłane za pomocą React hooks.
 :x: 4.0 Dane pomiędzy wszystkimi komponentami powinny być przesyłane za pomocą React hooks \
 :x: 4.5 Należy dodać skrypt uruchamiający aplikację serwerową oraz kliencką na dockerze via docker-compose \
 :x: 5.0 Należy wykorzystać axios’a oraz dodać nagłówki pod CORS
+
+[Link](https://www.youtube.com/watch?v=ogjjb3fM4oU) do filmu.

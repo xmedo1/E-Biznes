@@ -5,6 +5,8 @@ const Platnosci = () => {
 
   const sendPayment = (e) => {
 
+    e.preventDefault();
+
     const dane = { amount: Number.parseFloat(amount), data: new Date() };
 
     fetch('http://localhost:8080/payments', {

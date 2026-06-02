@@ -7,3 +7,5 @@
 :x: 5.0 Aplikacja obsłuży dodatkowo jedną z platform: Slack lub Messenger 
 
 Aplikację należy uruchomić na dockerze.
+
+[Link](https://www.youtube.com/watch?v=7Zk0X1CRYmA) do filmu.

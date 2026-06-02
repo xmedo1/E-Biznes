@@ -9,3 +9,5 @@ Należy stworzyć aplikację na frameworku Play lub Scalatra.
 :x: 5.0 Należy dodać konfigurację CORS dla dwóch hostów dla metod CRUD 
 
 Kontrolery mogą bazować na listach zamiast baz danych. CRUD: show all, show by id (get), update (put), delete (delete), add (post).
+
+[Link](https://www.youtube.com/watch?v=kn_J-zNLgt8) do filmu.

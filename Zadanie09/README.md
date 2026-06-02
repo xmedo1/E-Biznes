@@ -13,3 +13,5 @@ należy stworzyć w Pythonie.
 :x: 5.0 filtrowanie odpowiedzi po sentymencie \
 
 Można wykorzystać lokalny model przez ollama (https://ollama.com/).
+
+[Link](https://www.youtube.com/watch?v=OVblNP-l4qM) do filmu.

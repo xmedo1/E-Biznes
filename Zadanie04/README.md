@@ -11,3 +11,5 @@ jednak pozostać przy sqlite.
 :x: 4.0 Należy dodać model Koszyka oraz dodać odpowiedni endpoint \
 :x: 4.5 Należy stworzyć model kategorii i dodać relację między kategorią, a produktem \
 :x: 5.0 pogrupować zapytania w gorm’owe scope'y
+
+[Link](https://www.youtube.com/watch?v=4oBFR1FoA90) do filmu.

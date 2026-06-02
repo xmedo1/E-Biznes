@@ -4,6 +4,8 @@ const Platnosci = () => {
   const [amount, setAmount] = useState("");
 
   const sendPayment = (e) => {
+    
+    e.preventDefault();
 
     const dane = { amount: parseFloat(amount), data: new Date() };
 

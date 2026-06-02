@@ -13,3 +13,5 @@ stworzeniu darmowego konta via https://education.github.com/pack.
 :x: 4.0 Należy stworzyć testy jednostkowe do wybranego wcześniejszego projektu z minimum 50 asercjami \
 :x: 4.5 Należy dodać testy API, należy pokryć wszystkie endpointy z minimum jednym scenariuszem negatywnym per endpoint \
 :x: 5.0 Należy uruchomić testy funkcjonalne na Browserstacku
+
+[Link](https://www.youtube.com/watch?v=7q4Z1ZNpDYA) do filmu.
