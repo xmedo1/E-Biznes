@@ -1,7 +1,13 @@
-import { useState } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import { CartContext } from './CartContext';
 
 const Platnosci = () => {
+  const { getCartTotal } = useContext(CartContext);
   const [amount, setAmount] = useState("");
+
+  useEffect(() => {
+    setAmount(getCartTotal().toString());
+  }, [getCartTotal]);
 
   const sendPayment = (e) => {
     

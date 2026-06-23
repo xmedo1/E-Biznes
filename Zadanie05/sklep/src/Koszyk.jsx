@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useContext } from 'react';
+import { CartContext } from './CartContext';
 
 const Koszyk = () => {
-  const [cartItems] = useState([{ id: 1, name: "Jablko", price: 1.2 }]);
+  const { cart: cartItems } = useContext(CartContext);
 
   const sendCart = () => {
     fetch('http://localhost:8080/cart', {

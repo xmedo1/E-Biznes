@@ -1,7 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import { CartContext } from './CartContext';
 
 const Produkty = () => {
   const [items, setItems] = useState([]);
+  const { addToCart } = useContext(CartContext);
 
   useEffect(() => {
     fetch('http://localhost:8080/products')
@@ -16,7 +18,10 @@ const Produkty = () => {
       {items.length === 0 ? <p>Brak produktów.</p> : (
         <ul>
           {items.map(p => (
-            <li key={p.id}>{p.name} - {p.price} PLN</li>
+            <li key={p.id}>
+              {p.name} - {p.price} PLN
+              <button onClick={() => addToCart(p)} style={{ marginLeft: '10px' }}>Dodaj do koszyka</button>
+            </li>
           ))}
         </ul>
       )}
