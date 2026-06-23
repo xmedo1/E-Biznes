@@ -76,3 +76,16 @@ Content-Type: application/json
 
 ###
 GET http://localhost:8080/categories
+
+### 5.0 - gorm scopes
+### wszystkie produkty
+GET http://localhost:8080/products
+
+### tylko droższe niż 4.0
+GET http://localhost:8080/products?min_price=4.0
+
+### sortowanie malejąco
+GET http://localhost:8080/products?order=desc
+
+### droższe niż 4.0 i malejąco
+GET http://localhost:8080/products?min_price=4.0&order=desc

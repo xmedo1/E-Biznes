@@ -5,13 +5,28 @@ import (
 	"gorm.io/gorm"
 	"go-echo-api/models"
 	"github.com/labstack/echo/v4"
+	"strconv"
 )
 
 var Db *gorm.DB
 
 func GetAllProducts(c echo.Context) error {
 	var products []models.Product
-	Db.Find(&products)
+	query := Db.Model(&models.Product{})
+
+	minPriceStr := c.QueryParam("min_price")
+	if minPriceStr != "" {
+		minPrice, err := strconv.ParseFloat(minPriceStr, 64)
+		if err == nil {
+			query = query.Scopes(models.PriceGreaterThan(minPrice))
+		}
+	}
+
+	if c.QueryParam("order") == "desc" {
+		query = query.Scopes(models.OrderByPriceDesc)
+	}
+
+	query.Find(&products)
 	return c.JSON(http.StatusOK, products)
 }
 
