@@ -1,5 +1,6 @@
 import { useState, useEffect, useContext } from 'react';
 import { CartContext } from './CartContext';
+import axios from 'axios';
 
 const Platnosci = () => {
   const { getCartTotal } = useContext(CartContext);
@@ -15,13 +16,9 @@ const Platnosci = () => {
 
     const dane = { amount: parseFloat(amount), data: new Date() };
 
-    fetch('http://localhost:8080/payments', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(dane)
-    })
+    axios.post('http://localhost:8080/payments', dane)
     .then(res => {
-      if(res.ok) alert("Wyslano platnosc");
+      if(res.status === 201) alert("Wyslano platnosc");
     })
     .catch(err => console.error("Blad wysylania platnosci:", err));
   };

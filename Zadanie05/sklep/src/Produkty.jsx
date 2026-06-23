@@ -1,14 +1,14 @@
 import { useState, useEffect, useContext } from 'react';
 import { CartContext } from './CartContext';
+import axios from 'axios';
 
 const Produkty = () => {
   const [items, setItems] = useState([]);
   const { addToCart } = useContext(CartContext);
 
   useEffect(() => {
-    fetch('http://localhost:8080/products')
-      .then(response => response.json())
-      .then(data => setItems(data))
+    axios.get('http://localhost:8080/products')
+      .then(response => setItems(response.data))
       .catch(error => console.error('Błąd:', error));
   }, []);
 

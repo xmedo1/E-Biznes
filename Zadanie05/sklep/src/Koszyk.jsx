@@ -1,17 +1,14 @@
 import { useContext } from 'react';
 import { CartContext } from './CartContext';
+import axios from 'axios';
 
 const Koszyk = () => {
   const { cart: cartItems } = useContext(CartContext);
 
   const sendCart = () => {
-    fetch('http://localhost:8080/cart', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(cartItems)
-    })
+    axios.post('http://localhost:8080/cart', cartItems)
     .then(res => {
-      if(res.ok) alert("Wysłano koszyk na serwer!");
+      if(res.status === 201) alert("Wysłano koszyk na serwer!");
     })
     .catch(err => console.error("Błąd wysyłania koszyka:", err));
   };
