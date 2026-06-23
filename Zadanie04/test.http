@@ -43,3 +43,36 @@ Content-Type: application/json
 POST http://localhost:8080/carts/1/products/1
 ###
 GET http://localhost:8080/carts/1
+
+### 4.5 - kategorie
+
+###
+POST http://localhost:8080/categories
+Content-Type: application/json
+
+{
+    "name": "Owoce"
+}
+
+###
+POST http://localhost:8080/products
+Content-Type: application/json
+
+{
+    "name": "Jablko",
+    "price": 1.5,
+    "category_id": 1
+}
+
+###
+POST http://localhost:8080/products
+Content-Type: application/json
+
+{
+    "name": "Truskawka",
+    "price": 6.5,
+    "category_id": 1
+}
+
+###
+GET http://localhost:8080/categories
