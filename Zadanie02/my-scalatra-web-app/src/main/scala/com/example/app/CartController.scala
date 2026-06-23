@@ -5,7 +5,7 @@ import org.scalatra.json._
 import org.json4s._
 import scala.collection.mutable.ListBuffer
 
-class CartController extends ScalatraServlet with JacksonJsonSupport {
+class CartController extends ScalatraServlet with JacksonJsonSupport with CorsSupport {
 
   protected implicit lazy val jsonFormats: Formats = DefaultFormats
 
@@ -13,6 +13,10 @@ class CartController extends ScalatraServlet with JacksonJsonSupport {
     contentType = formats("json")
   }
   
+  options("/*") {
+    response.setHeader("Access-Control-Allow-Headers", request.getHeader("Access-Control-Request-Headers"))
+  }
+
   val cartItems = ListBuffer[Product]()
 
   get("/") {

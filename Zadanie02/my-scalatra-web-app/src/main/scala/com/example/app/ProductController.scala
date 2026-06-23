@@ -7,12 +7,16 @@ import scala.collection.mutable.ListBuffer
 
 case class Product(id: Int, name: String, price: Double)
 
-class ProductController extends ScalatraServlet with JacksonJsonSupport {
+class ProductController extends ScalatraServlet with JacksonJsonSupport with CorsSupport {
 
   protected implicit lazy val jsonFormats: Formats = DefaultFormats
 
   before() {
     contentType = formats("json")
+  }
+
+  options("/*") {
+    response.setHeader("Access-Control-Allow-Headers", request.getHeader("Access-Control-Request-Headers"))
   }
   
   val products = ListBuffer(
