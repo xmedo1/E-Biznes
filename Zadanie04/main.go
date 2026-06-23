@@ -15,7 +15,7 @@ func main() {
 		panic("Blad - baza danych")
 	}
 
-	db.AutoMigrate(&models.Product{})
+	db.AutoMigrate(&models.Product{}, &models.Cart{})
 	handlers.Db = db
 
 	e := echo.New()
@@ -27,6 +27,10 @@ func main() {
 	g.POST("", handlers.CreateProduct)
 	g.PUT("/:id", handlers.UpdateProduct)
 	g.DELETE("/:id", handlers.DeleteProduct)
+	c := e.Group("/carts")
+	c.POST("", handlers.CreateCart)
+	c.GET("/:id", handlers.GetCart)
+	c.POST("/:cartId/products/:productId", handlers.AddProductToCart)
 
 	e.Logger.Fatal(e.Start(":8080"))
 }

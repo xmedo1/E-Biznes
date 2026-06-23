@@ -1,6 +1,6 @@
 GET http://localhost:8080/products
 
-###
+### Tworzenie produktów
 POST http://localhost:8080/products
 Content-Type: application/json
 
@@ -10,16 +10,36 @@ Content-Type: application/json
     "price": 1.5
 }
 
+### 
+POST http://localhost:8080/products
+Content-Type: application/json
+
+{
+    "id": 2,
+    "name": "Pomarancza",
+    "price": 3.5
+}
+
 ###
 PUT http://localhost:8080/products/1
 Content-Type: application/json
 
 {
     "id": 1,
-    "name": "Pomarancza",
-    "price": 3.5
+    "name": "Banan",
+    "price": 4.0
 }
 
-###
+
+### Usuwanie
 DELETE http://localhost:8080/products/2
 
+### 4.0 - koszyk
+
+POST http://localhost:8080/carts
+Content-Type: application/json
+
+###
+POST http://localhost:8080/carts/1/products/1
+###
+GET http://localhost:8080/carts/1
