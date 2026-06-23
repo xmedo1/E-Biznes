@@ -32,6 +32,16 @@ func main() {
 		}
 	})
 
+	http.HandleFunc("/cart", func(w http.ResponseWriter, r *http.Request) {
+		enableCors(&w)
+		if r.Method == "POST" {
+			var data []interface{}
+			json.NewDecoder(r.Body).Decode(&data)
+			fmt.Printf("Otrzymano koszyk: %v\n", data)
+			w.WriteHeader(http.StatusCreated)
+		}
+	})
+
 	fmt.Println("URL backendu: http://localhost:8080")
 	http.ListenAndServe(":8080", nil)
 }
