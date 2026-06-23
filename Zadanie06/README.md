@@ -10,8 +10,8 @@ stworzeniu darmowego konta via https://education.github.com/pack.
 
 :white_check_mark: 3.0 Należy stworzyć 20 przypadków testowych w CypressJS lub Selenium (Kotlin, Python, Java, JS, Go, Scala) [[commit](https://github.com/xmedo1/E-Biznes/commit/98206eec95b4f0d8d0e8c8469d5e724033dddb38)]\
 :white_check_mark: 3.5 Należy rozszerzyć testy funkcjonalne, aby zawierały minimum 50 asercji [[commit](https://github.com/xmedo1/E-Biznes/commit/d2369fd8cd30ac5cde9e5dfa638f2dc9f238ba6a)] \
-:x: 4.0 Należy stworzyć testy jednostkowe do wybranego wcześniejszego projektu z minimum 50 asercjami \
-:x: 4.5 Należy dodać testy API, należy pokryć wszystkie endpointy z minimum jednym scenariuszem negatywnym per endpoint \
+:white_check_mark: 4.0 Należy stworzyć testy jednostkowe do wybranego wcześniejszego projektu z minimum 50 asercjami [[commit](https://github.com/xmedo1/E-Biznes/commit/ee43bf29e44a25d48bc8727459485a5ba56f7e88)] \
+:white_check_mark: 4.5 Należy dodać testy API, należy pokryć wszystkie endpointy z minimum jednym scenariuszem negatywnym per endpoint [[commit](https://github.com/xmedo1/E-Biznes/commit/05598809f6b178e4eadfeec5e5c27aa1fb532a14)] \
 :x: 5.0 Należy uruchomić testy funkcjonalne na Browserstacku
 
 [Link](https://www.youtube.com/watch?v=7q4Z1ZNpDYA) do filmu.
