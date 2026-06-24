@@ -18,6 +18,7 @@ import (
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
 	"github.com/joho/godotenv"
+	"golang.org/x/oauth2/github"
 )
 
 var db *sql.DB
@@ -26,6 +27,12 @@ var googleOauthConfig = &oauth2.Config{
 	RedirectURL: "http://localhost:8080/auth/google/callback",
 	Scopes: []string{"https://www.googleapis.com/auth/userinfo.email", "https://www.googleapis.com/auth/userinfo.profile"},
 	Endpoint: google.Endpoint,
+}
+
+var githubOauthConfig = &oauth2.Config{
+	RedirectURL: "http://localhost:8080/auth/github/callback",
+	Scopes: []string{"user:email"},
+	Endpoint: github.Endpoint,
 }
 
 func initDB() {
@@ -84,6 +91,9 @@ func main() {
 
 	googleOauthConfig.ClientID = os.Getenv("GOOGLE_CLIENT_ID")
     googleOauthConfig.ClientSecret = os.Getenv("GOOGLE_CLIENT_SECRET")
+
+	githubOauthConfig.ClientID = os.Getenv("GITHUB_CLIENT_ID")
+    githubOauthConfig.ClientSecret = os.Getenv("GITHUB_CLIENT_SECRET")
 
 	http.HandleFunc("/products", func(w http.ResponseWriter, r *http.Request) {
 		enableCors(&w)
@@ -249,14 +259,54 @@ func main() {
         username = strings.TrimPrefix(tokenContent, "google:")
     } else if strings.HasPrefix(tokenContent, "local:") {
         username = strings.TrimPrefix(tokenContent, "local:")
-    }
+    } else if strings.HasPrefix(tokenContent, "github:") {
+    	username = strings.TrimPrefix(tokenContent, "github:")
+		}
     response := map[string]string{
         "username": username,
     }
     w.Header().Set("Content-Type", "application/json")
     json.NewEncoder(w).Encode(response)
-})
+	})
 
+	http.HandleFunc("/auth/github/login", func(w http.ResponseWriter, r *http.Request) {
+		oauthState := generateStateOauthCookie(w)
+		u := githubOauthConfig.AuthCodeURL(oauthState)
+		http.Redirect(w, r, u, http.StatusTemporaryRedirect)
+	})
+
+	http.HandleFunc("/auth/github/callback", func(w http.ResponseWriter, r *http.Request) {
+		oauthState, _ := r.Cookie("oauthstate")
+		if r.FormValue("state") != oauthState.Value {
+			http.Redirect(w, r, "http://localhost:5173/login?error=invalid_state", http.StatusTemporaryRedirect)
+			return
+		}
+
+		token, err := githubOauthConfig.Exchange(context.Background(), r.FormValue("code"))
+		if err != nil {
+			http.Redirect(w, r, "http://localhost:5173/login?error=token_failed", http.StatusTemporaryRedirect)
+			return
+		}
+
+		req, _ := http.NewRequest("GET", "https://api.github.com/user", nil)
+		req.Header.Set("Authorization", "token "+token.AccessToken)
+		
+		client := &http.Client{}
+		response, err := client.Do(req)
+		if err != nil {
+			http.Redirect(w, r, "http://localhost:5173/login?error=user_info_failed", http.StatusTemporaryRedirect)
+			return
+		}
+		defer response.Body.Close()
+
+		var user map[string]interface{}
+		json.NewDecoder(response.Body).Decode(&user)
+
+		username := user["login"].(string)
+		appToken := base64.StdEncoding.EncodeToString([]byte("github:" + username))
+
+		http.Redirect(w, r, "http://localhost:5173/login?token="+appToken, http.StatusTemporaryRedirect)
+	})
 
 	fmt.Println("URL backendu: http://localhost:8080")
 	if err := http.ListenAndServe(":8080", nil); err != nil {

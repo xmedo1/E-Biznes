@@ -84,6 +84,14 @@ const Login = () => {
         </a>
       </div>
 
+      <div style={{ marginTop: '10px' }}>
+        <a href="http://localhost:8080/auth/github/login" style={{ textDecoration: 'none' }}>
+          <button type="button" style={{ width: '100%', padding: '8px', backgroundColor: '#110639', color: 'white', border: 'none', cursor: 'pointer', fontWeight: 'bold' }}>
+            Zaloguj przez GitHub
+          </button>
+        </a>
+      </div>
+
       {errorMsg && <p style={{ color: 'red', marginTop: '10px', fontWeight: 'bold' }}>{errorMsg}</p>}
 
       <div style={{ marginTop: '15px', fontSize: '14px' }}>
