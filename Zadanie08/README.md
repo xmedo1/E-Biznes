@@ -19,4 +19,5 @@ Klucz należy uzyskać na:
 - https://console.cloud.google.com/apis/dashboard,
 - https://developers.facebook.com/
 
-[Link](https://www.youtube.com/watch?v=ZiUKDB4M_rY) do filmu.
+[Link](https://www.youtube.com/watch?v=ZiUKDB4M_rY) do filmu. \
+[Link](https://www.youtube.com/watch?v=5XFwd_CYRDk) do filmu z demo OAuth2 dla Google i Github.
