@@ -49,5 +49,5 @@ jobs:
           to: ${{ secrets.MAIL_TO }}
           from: GitHub Actions Bot
           body: |
-            Analiza kodu w projekcie ${{ github.repository }} została zakończona.
+            Analiza kodu w projekcie ${{ github.repository }} została  zakończona.
             Status: ${{ job.status }}
