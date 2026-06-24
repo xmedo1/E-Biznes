@@ -34,15 +34,20 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: >
+            -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }}
+            -Dsonar.organization=${{ secrets.SONAR_ORGANIZATION }}
+            -Dsonar.sources=Zadanie10
       
-      # 
+      
       - name: Sonar e-mail
         uses: dawidd6/action-send-mail@v3
         if: always()
         with:
-          server_address: smtp.gmail.com
-          server_port: 465
-          secure: true
+          server_address: smtp.ethereal.email
+          server_port: 587
+          secure: false
           username: ${{ secrets.MAIL_USERNAME }}
           password: ${{ secrets.MAIL_PASSWORD }}
           subject: Wyniki analizy Sonar - ${{ github.repository }}
