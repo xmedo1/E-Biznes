@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate, Link, useSearchParams } from 'react-router-dom';
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -7,6 +7,19 @@ const Login = () => {
   const [errorMsg, setErrorMsg] = useState("");
   
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
+  useEffect(() => {
+    const token = searchParams.get("token");
+    const error = searchParams.get("error");
+    
+    if (token) {
+      localStorage.setItem('token', token); 
+      navigate('/sklep');
+    } else if (error) {
+      setErrorMsg("Błąd logowania przez dostawcę: " + error);
+    }
+  }, [searchParams, navigate]);
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -62,6 +75,15 @@ const Login = () => {
         </div>
         <button type="submit" style={{ width: '100%', padding: '5px', marginTop: '15px' }}>Zaloguj</button>
       </form>
+
+      <div style={{ marginTop: '20px' }}>
+        <a href="http://localhost:8080/auth/google/login" style={{ textDecoration: 'none' }}>
+          <button type="button" style={{ width: '100%', padding: '8px', backgroundColor: '#db4437', color: 'white', border: 'none', cursor: 'pointer', fontWeight: 'bold' }}>
+            Zaloguj przez Google
+          </button>
+        </a>
+      </div>
+
       {errorMsg && <p style={{ color: 'red', marginTop: '10px', fontWeight: 'bold' }}>{errorMsg}</p>}
 
       <div style={{ marginTop: '15px', fontSize: '14px' }}>

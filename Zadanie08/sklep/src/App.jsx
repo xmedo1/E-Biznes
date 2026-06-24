@@ -3,10 +3,12 @@ import Produkty from './Produkty'
 import Platnosci from './Platnosci'
 import Login from './Login';
 import Register from './Register';
+import UserPanel from './UserPanel';
 
 const Sklep = () => {
   return (
     <div>
+      <UserPanel />
       <h1>Sklep</h1>
       <Produkty />
       <Platnosci />
