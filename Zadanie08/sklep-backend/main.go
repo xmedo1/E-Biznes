@@ -93,9 +93,9 @@ func main() {
 	initDB()
 	defer db.Close()
 
-	err := godotenv.Load()
+	err := godotenv.Load("../.env")
     if err != nil {
-        log.Fatal("Błąd ładowania .env")
+        log.Println("Błąd ładowania .env (w dockerze tak ma być)")
     }
 
 	googleOauthConfig.ClientID = os.Getenv("GOOGLE_CLIENT_ID")

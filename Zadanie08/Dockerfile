@@ -4,6 +4,8 @@ RUN apt-get update && apt-get install -y nodejs npm golang-go
 
 WORKDIR /app
 
+COPY .env .env
+
 COPY sklep-backend ./sklep-backend
 RUN cd sklep-backend && go build -o server .
 
