@@ -43,16 +43,25 @@ func initDB() {
 	}
 
 	createTableSQL := `CREATE TABLE IF NOT EXISTS users (
-		"id" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
-		"username" TEXT UNIQUE NOT NULL,
-		"password" TEXT NOT NULL
-	);`
+        "id" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
+        "username" TEXT UNIQUE NOT NULL,
+        "password" TEXT, 
+        "provider" TEXT DEFAULT 'local'
+    );`
 
 	_, err = db.Exec(createTableSQL)
 	if err != nil {
 		log.Fatal(err)
 	}
 	_, _ = db.Exec(`INSERT OR IGNORE INTO users (username, password) VALUES ('admin', 'password')`)
+}
+
+func ensureUserExists(username string, provider string) {
+    _, err := db.Exec("INSERT OR IGNORE INTO users (username, password, provider) VALUES (?, ?, ?)", 
+        username, nil, provider)
+    if err != nil {
+        log.Printf("Błąd: %v", err)
+    }
 }
 
 type Product struct {
@@ -133,14 +142,25 @@ func main() {
 			return
 		}
 
-		var dbPassword string
-		err := db.QueryRow("SELECT password FROM users WHERE username = ?", creds.Username).Scan(&dbPassword)
+		var dbPassword sql.NullString
+    	var provider string
+		err := db.QueryRow("SELECT password, provider FROM users WHERE username = ?", creds.Username).Scan(&dbPassword, &provider)
 		
-		if err == sql.ErrNoRows || dbPassword != creds.Password {
+		if err == sql.ErrNoRows {
 			http.Error(w, "Zle dane logowania", http.StatusUnauthorized)
 			return
 		} else if err != nil {
 			http.Error(w, "Blad serwera", http.StatusInternalServerError)
+			return
+		}
+
+		if provider != "local" {
+        	http.Error(w, "To konto jest powiązane z "+provider+". Zaloguj się przez "+provider, http.StatusUnauthorized)
+        	return
+    	}
+
+		if dbPassword.String != creds.Password {
+			http.Error(w, "Zle dane logowania", http.StatusUnauthorized)
 			return
 		}
 
@@ -170,7 +190,7 @@ func main() {
 			return
 		}
 
-		_, err := db.Exec("INSERT INTO users (username, password) VALUES (?, ?)", creds.Username, creds.Password)
+		_, err := db.Exec("INSERT INTO users (username, password, provider) VALUES (?, ?, 'local')", creds.Username, creds.Password)
 		
 		if err != nil {
 			http.Error(w, "Login zajety", http.StatusConflict)
@@ -227,6 +247,8 @@ func main() {
 		json.Unmarshal(contents, &user)
 
 		email := user["email"].(string)
+
+		ensureUserExists(email, "google")
 
 		appToken := base64.StdEncoding.EncodeToString([]byte("google:" + email))
 
@@ -303,6 +325,9 @@ func main() {
 		json.NewDecoder(response.Body).Decode(&user)
 
 		username := user["login"].(string)
+
+		ensureUserExists(username, "github")
+
 		appToken := base64.StdEncoding.EncodeToString([]byte("github:" + username))
 
 		http.Redirect(w, r, "http://localhost:5173/login?token="+appToken, http.StatusTemporaryRedirect)
