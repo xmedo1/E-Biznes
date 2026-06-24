@@ -11,9 +11,9 @@ Prawidłowa komunikacja: react-sewer-dostawca-serwer(via return uri)-react.
 
 :white_check_mark: 3.0 logowanie przez aplikację serwerową (bez Oauth2) [[commit](https://github.com/xmedo1/E-Biznes/commit/dc1bb1eaa55989f77d2f77ac77765a5d51460d45)] \
 :white_check_mark: 3.5 rejestracja przez aplikację serwerową (bez Oauth2) [[commit](https://github.com/xmedo1/E-Biznes/commit/04dbaf37510c20b13bf4619cebd1426ced150c20)] \
-:x: 4.0 logowanie via Google OAuth2 \
-:x: 4.5 logowanie via Facebook lub Github OAuth2 \
-:x: 5.0 zapisywanie danych logowania OAuth2 po stronie serwera \
+:white_check_mark: 4.0 logowanie via Google OAuth2 [[commit](https://github.com/xmedo1/E-Biznes/commit/894c3f525f9e786157ec9dd28df9cbf1aee2ed12)] \
+:white_check_mark: 4.5 logowanie via Facebook lub Github OAuth2 [[commit](https://github.com/xmedo1/E-Biznes/commit/d488e7acf1c5190c3dd7d8461f1b9c7f4455768d)] \
+:white_check_mark: 5.0 zapisywanie danych logowania OAuth2 po stronie serwera [[commit](https://github.com/xmedo1/E-Biznes/commit/e1a41342d12761291683b99b4ec5eed6fadb48fb)] 
 
 Klucz należy uzyskać na:
 - https://console.cloud.google.com/apis/dashboard,
